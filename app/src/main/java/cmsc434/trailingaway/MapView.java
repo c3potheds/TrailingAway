@@ -19,7 +19,7 @@ import android.widget.TextView;
 /**
  * Created by Simeon on 12/4/14.
  */
-public class MapView extends View implements LocationListener {
+public class MapView extends View {
 
     private boolean _isRecording = true;
     private Path _path = new Path();
@@ -50,15 +50,10 @@ public class MapView extends View implements LocationListener {
         _cursorPaint.setStyle(Paint.Style.FILL);
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
+    public void updateLocation(Location location) {
 
         TextView locationTextView = (TextView)findViewById(R.id.textViewLocation);
 
-        if (locationTextView == null) {
-            Log.i("a", "qwertyui");
-            return;
-        }
         locationTextView.setText("Location: " + location.getLatitude() + ", " +
                 location.getLongitude());
         TextView accuracyView = (TextView)findViewById(R.id.textViewAccuracy);
@@ -71,32 +66,6 @@ public class MapView extends View implements LocationListener {
         float y = latitudeToY(location);
         _path.lineTo(x, y);
         _currentLocation = location;
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        TextView statusTextView = (TextView)findViewById(R.id.textViewGPSStatus);
-        switch (status) {
-            case LocationProvider.AVAILABLE:
-                statusTextView.setText("GPS Status: Available");
-                break;
-            case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                statusTextView.setText("GPS Status: Temporarily unavailable");
-                break;
-            case LocationProvider.OUT_OF_SERVICE:
-                statusTextView.setText("GPS Status: Out of service");
-                break;
-        }
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        System.out.println(provider + " enabled");
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        System.out.println(provider + " disabled");
     }
 
     @Override
