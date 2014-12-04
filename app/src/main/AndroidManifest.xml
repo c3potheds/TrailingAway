@@ -22,6 +22,10 @@
             android:name=".MapActivity"
             android:label="@string/title_activity_map" >
         </activity>
+        <activity
+            android:name="cmsc434.trailingaway.RoutesActivity"
+            android:label="@string/title_activity_routes" >
+        </activity>
     </application>
 
 </manifest>

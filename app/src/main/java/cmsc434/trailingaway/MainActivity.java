@@ -44,4 +44,9 @@ public class MainActivity extends Activity {
         startActivity(intent);
 
     }
+
+    public void onRoutesClicked(View view) {
+        Intent intent = new Intent(this, RoutesActivity.class);
+        startActivity(intent);
+    }
 }
