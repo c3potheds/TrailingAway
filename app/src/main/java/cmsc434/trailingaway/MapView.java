@@ -11,6 +11,8 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -50,7 +52,13 @@ public class MapView extends View implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+
         TextView locationTextView = (TextView)findViewById(R.id.textViewLocation);
+
+        if (locationTextView == null) {
+            Log.i("a", "qwertyui");
+            return;
+        }
         locationTextView.setText("Location: " + location.getLatitude() + ", " +
                 location.getLongitude());
         TextView accuracyView = (TextView)findViewById(R.id.textViewAccuracy);
@@ -95,9 +103,11 @@ public class MapView extends View implements LocationListener {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawPath(_path, _pathPaint);
-        drawYouCursor(canvas, longitudeToX(_currentLocation), latitudeToY(_currentLocation),
-                _currentLocation.getBearing());
+        if (_startLocation != null) {
+            drawYouCursor(canvas, longitudeToX(_currentLocation), latitudeToY(_currentLocation),
+                    _currentLocation.getBearing());
 
+        }
     }
 
     private void drawYouCursor(Canvas canvas, float x, float y, float orientation) {
