@@ -24,7 +24,8 @@ public class MapActivity extends Activity implements LocationListener {
         _mapView = (MapView)findViewById(R.id.mapView);
         _locationManager = (LocationManager)this.getSystemService(
                 Context.LOCATION_SERVICE);
-        _locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        //Use GPS, poll every 1000 milliseconds
+        _locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
 
     }
 
