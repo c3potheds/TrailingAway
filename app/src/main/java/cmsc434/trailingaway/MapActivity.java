@@ -53,8 +53,8 @@ public class MapActivity extends Activity implements LocationListener {
 
         TextView locationTextView = (TextView)findViewById(R.id.textViewLocation);
 
-        locationTextView.setText("Location: " + location.getLatitude() + ", " +
-                location.getLongitude());
+        locationTextView.setText("Location: " + _mapView.longitudeToX(location) + ", " +
+                _mapView.latitudeToY(location));
         TextView accuracyView = (TextView)findViewById(R.id.textViewAccuracy);
         accuracyView.setText("Accuracy: " + location.getAccuracy() + " m");
         _mapView.updateLocation(location);

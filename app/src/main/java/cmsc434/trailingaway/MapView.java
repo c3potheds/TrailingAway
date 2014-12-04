@@ -46,18 +46,13 @@ public class MapView extends View {
     private void init(AttributeSet attributeSet, int defStyle) {
         _pathPaint.setColor(Color.CYAN);
         _pathPaint.setStyle(Paint.Style.STROKE);
+        _pathPaint.setStrokeWidth(4);
         _cursorPaint.setColor(Color.BLUE);
         _cursorPaint.setStyle(Paint.Style.FILL);
     }
 
     public void updateLocation(Location location) {
 
-        TextView locationTextView = (TextView)findViewById(R.id.textViewLocation);
-
-        locationTextView.setText("Location: " + location.getLatitude() + ", " +
-                location.getLongitude());
-        TextView accuracyView = (TextView)findViewById(R.id.textViewAccuracy);
-        accuracyView.setText("Accuracy: " + location.getAccuracy() + " m");
         if (_startLocation == null) {
             _startLocation = location;
             _path.moveTo(longitudeToX(_startLocation), latitudeToY(_startLocation));
@@ -66,6 +61,7 @@ public class MapView extends View {
         float y = latitudeToY(location);
         _path.lineTo(x, y);
         _currentLocation = location;
+        invalidate();
     }
 
     @Override
@@ -81,24 +77,30 @@ public class MapView extends View {
 
     private void drawYouCursor(Canvas canvas, float x, float y, float orientation) {
         float x1, x2, x3, y1, y2, y3;
-        x1 = x+32.0f*(float)Math.cos(orientation);
-        x2 = x+18.0f*(float)Math.cos(orientation+Math.toRadians(160));
-        x3 = x+18.0f*(float)Math.cos(orientation+Math.toRadians(200));
-        y1 = x+32.0f*(float)Math.sin(orientation);
-        y2 = x+18.0f*(float)Math.sin(orientation+Math.toRadians(160));
-        y3 = x+18.0f*(float)Math.sin(orientation+Math.toRadians(200));
+        x1 = x+64.0f*(float)Math.cos(orientation);
+        x2 = x+32.0f*(float)Math.cos(orientation+Math.toRadians(160));
+        x3 = x+32.0f*(float)Math.cos(orientation+Math.toRadians(200));
+        y1 = x+64.0f*(float)Math.sin(orientation);
+        y2 = x+32.0f*(float)Math.sin(orientation+Math.toRadians(160));
+        y3 = x+32.0f*(float)Math.sin(orientation+Math.toRadians(200));
         canvas.drawLine(x1, y1, x2, y2, _cursorPaint);
         canvas.drawLine(x2, y2, x3, y3, _cursorPaint);
         canvas.drawLine(x3, y3, x1, y1, _cursorPaint);
     }
 
-    private float longitudeToX(Location location) {
-        return getWidth()/2+_startLocation.distanceTo(location) *
+    public float longitudeToX(Location location) {
+        if (_startLocation == null) {
+            return 0.0f;
+        }
+        return getWidth()/2 + _startLocation.distanceTo(location) *
                 (float)Math.cos(-_startLocation.bearingTo(location)+90);
     }
 
-    private float latitudeToY(Location location) {
-        return getHeight()/2+_startLocation.distanceTo(location) *
+    public float latitudeToY(Location location) {
+        if (_startLocation == null) {
+            return 0.0f;
+        }
+        return getHeight()/2 + _startLocation.distanceTo(location) *
                 (float)Math.sin(-_startLocation.bearingTo(location)+90);
     }
 }
