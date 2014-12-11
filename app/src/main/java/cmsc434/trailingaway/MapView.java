@@ -5,14 +5,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,34 +25,49 @@ import android.widget.TextView;
  */
 public class MapView extends View {
 
-    private boolean _isRecording = true;
+    //private boolean _isRecording = true;
     private Path _path = new Path();
     private Paint _pathPaint = new Paint();
     private Paint _cursorPaint = new Paint();
     private Location _startLocation = null;
     private Location _currentLocation = null;
+    private Rect _bounds = new Rect(0, 0, getWidth(), getHeight());
+    private Matrix _zoomMatrix = new Matrix();
+    private boolean _zooming = false;
+    private ScaleGestureDetector _scaleDetector;
 
     public MapView(Context context) {
         super(context);
-        init(null, 0);
+        init(context, null, 0);
     }
 
     public MapView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        init(attributeSet, 0);
+        init(context, attributeSet, 0);
     }
 
     public MapView(Context context, AttributeSet attributeSet, int defStyle) {
         super(context, attributeSet, defStyle);
-        init(attributeSet, defStyle);
+        init(context, attributeSet, defStyle);
     }
 
-    private void init(AttributeSet attributeSet, int defStyle) {
+    private void init(Context context, AttributeSet attributeSet, final int defStyle) {
         _pathPaint.setColor(Color.CYAN);
         _pathPaint.setStyle(Paint.Style.STROKE);
         _pathPaint.setStrokeWidth(4);
         _cursorPaint.setColor(Color.BLUE);
         _cursorPaint.setStyle(Paint.Style.FILL);
+
+        _scaleDetector = new ScaleGestureDetector(context,
+                new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                _zoomMatrix.preScale(detector.getScaleFactor(), detector.getScaleFactor(),
+                        detector.getFocusX(), detector.getFocusY());
+                _zooming = true;
+                return true;
+            }
+        });
     }
 
     public void updateLocation(Location location) {
@@ -60,6 +79,7 @@ public class MapView extends View {
         float x = longitudeToX(location);
         float y = latitudeToY(location);
         _path.lineTo(x, y);
+        _bounds.union((int)x, (int)y);
         _currentLocation = location;
         invalidate();
     }
@@ -67,12 +87,24 @@ public class MapView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.save();
+        canvas.translate((getWidth()-_bounds.width())/2, (getHeight()-_bounds.height())/2);
+        if (!_zooming) {
+            canvas.scale(_bounds.width() / getWidth(), _bounds.height() / getHeight());
+        }
         canvas.drawPath(_path, _pathPaint);
         if (_startLocation != null) {
             drawYouCursor(canvas, longitudeToX(_currentLocation), latitudeToY(_currentLocation),
                     _currentLocation.getBearing());
 
         }
+        canvas.restore();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        _scaleDetector.onTouchEvent(event);
+        return true;
     }
 
     private void drawYouCursor(Canvas canvas, float x, float y, float orientation) {
@@ -86,6 +118,7 @@ public class MapView extends View {
         canvas.drawLine(x1, y1, x2, y2, _cursorPaint);
         canvas.drawLine(x2, y2, x3, y3, _cursorPaint);
         canvas.drawLine(x3, y3, x1, y1, _cursorPaint);
+        
     }
 
     public float longitudeToX(Location location) {
