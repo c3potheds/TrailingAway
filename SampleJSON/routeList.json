@@ -1,0 +1,8 @@
+{
+   "routesList": [
+   { "routeName":"routeName",
+     "routeType":"BIKE",
+     "folderLocation":"folderLocation"
+   }
+   ]
+ }

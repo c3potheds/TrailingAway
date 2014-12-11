@@ -3,7 +3,10 @@ package cmsc434.trailingaway;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.LightingColorFilter;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -11,9 +14,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import cmsc434.trailingaway.utilities.JSONUtils;
 
 /**
  * Created by Bryan on 12/2/2014.
@@ -38,6 +45,7 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
         //Initial item, we want to set it to add.
         if(position == 0 || values[position] == null) {
 
+            rowView.setAlpha(1);
             //Set background to differentiate
             rowView.setBackgroundColor(Color.GREEN);
             //Set icon to "+"
@@ -48,10 +56,15 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
             addText.setText("Add New Route");
 
             Button button = (Button) rowView.findViewById(R.id.routeButton);
-            button.setText("Add");
-            button.setOnClickListener(new View.OnClickListener() {
+            button.setVisibility(View.INVISIBLE);
+
+            rowView.setHapticFeedbackEnabled(true);
+
+            rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //This wil start recording a new route
+                    v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                     Intent intent = new Intent(v.getContext(), MapActivity.class);
                     v.getContext().startActivity(intent);
                 }
@@ -81,6 +94,22 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
                 break;
         }
 
+
+        Button button = (Button) rowView.findViewById(R.id.routeButton);
+        //Make this object final so that we can access it in the inner class - can be avoided if we
+        //make this an actual class w/constructor
+        final RouteRowData data = values[position];
+
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //TODO: This method will start an activity that will display the route located at
+//                // location given by the GSON
+//                JSONUtils.gsonToLatLonList();
+//                JSONUtils.gsonToLandmarks();
+//                data.getFolderLocation();
+//            }
+//        });
 
         return rowView;
     }

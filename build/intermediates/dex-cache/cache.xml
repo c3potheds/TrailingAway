@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\pre-dexed\debug\classes-a865262a55e7a78907b9d9b55888d03d526e385d.jar"
+        jar="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\exploded-aar\com.android.support\support-v13\21.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="0c0c19759e5868604a3b4c2c0074ee9404d73c76"/>
+    <item
+        dex="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.0-7b61d252cf639022a1dbcf0bc69842c279a4657b.jar"
+        jar="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\libs\internal_impl-21.0.0.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0"/>
+    <item
+        dex="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\pre-dexed\debug\classes-8da9f23485cfea23e49ecfc07ffc55d30a4bc98a.jar"
+        jar="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\exploded-aar\com.google.maps.android\android-maps-utils\0.3.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="930e8ad21abe9439e61d5f4da51cf01d01f18f4d"/>
+    <item
+        dex="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\pre-dexed\debug\classes-61650ff6b493cc7d63176ed93c49f5fb0a154af3.jar"
+        jar="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="686344a780033e4ba22b926cd225f8d4941247e6"/>
+    <item
+        dex="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\pre-dexed\debug\gson-2.2.4-1c0a269ce4171e07546cd1287a71f5f7549cbc64.jar"
+        jar="C:\Users\Bryan\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.2.4\a60a5e993c98c864010053cb901b7eab25306568\gson-2.2.4.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="a60a5e993c98c864010053cb901b7eab25306568"/>
+    <item
+        dex="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.0-062747efc395ba4094101c4de3af57e744b98f05.jar"
+        jar="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\exploded-aar\com.android.support\support-v13\21.0.0\libs\internal_impl-21.0.0.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="5a8e01742aee890c56fe638ea7c921b91a3fdc62"/>
+    <item
+        dex="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.0-5b7df432b76178707f5da32a8357299e6831fcd9.jar"
+        jar="G:\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.0\support-annotations-21.0.0.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e"/>
+    <item
+        dex="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\pre-dexed\debug\classes-d1f5d0e781d974fa2567f1ba65ef5df2ff3a313a.jar"
+        jar="C:\Users\Bryan\AndroidStudioProjects\TrailingAwayNew\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256"/>
+
+</pre-dex-items>

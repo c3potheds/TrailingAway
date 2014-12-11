@@ -1,0 +1,22 @@
+{
+  "name": "SampleName",
+  "positions": [
+    [1.8383,2],
+    [2,3],
+    [2,4]
+  ],
+  "landmarks": [
+    {
+      "description": "Nice Description",
+      "type": "default",
+      "image: "pathToImage",
+      "position": [1,2]
+    },
+    {
+      "description": "Nice Description",
+      "type": "default",
+      "image: "pathToImage",
+      "position": [2,3]
+    }
+    ]
+}
