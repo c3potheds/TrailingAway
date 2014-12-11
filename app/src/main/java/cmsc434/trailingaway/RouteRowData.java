@@ -9,21 +9,22 @@ public class RouteRowData implements Serializable {
 
     private RouteType routeType;
     private String title;
-    private double distance;
+    private String folderLocation;
 
-    public RouteRowData(RouteType rt, String title, double distance) {
+    public String getFolderLocation() {
+        return folderLocation;
+    }
+
+    public void setFolderLocation(String folderLocation) {
+        this.folderLocation = folderLocation;
+    }
+
+    public RouteRowData(RouteType rt, String title, String folderLocation) {
         this.routeType = rt;
         this.title = title;
-        this.distance = distance;
+        this.folderLocation = folderLocation;
     }
 
-    public double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
 
     public RouteType getRouteType() {
         return routeType;

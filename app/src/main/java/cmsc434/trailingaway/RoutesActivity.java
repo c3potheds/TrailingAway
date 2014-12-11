@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.File;
 import java.util.Locale;
 
 
@@ -39,7 +40,7 @@ public class RoutesActivity extends Activity implements ActionBar.TabListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
 
-         // Set up the action bar.
+        // Set up the action bar.
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -126,8 +127,13 @@ public class RoutesActivity extends Activity implements ActionBar.TabListener {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(position == 0)
-                return new RoutesListFragment();
+            if(position == 0) {
+                RoutesListFragment rlf = new RoutesListFragment();
+                Bundle args = new Bundle();
+                args.putString("filesDir", getFilesDir().getAbsolutePath());
+                rlf.setArguments(args);
+                return rlf;
+            }
             else if (position == 1)
                 return PlaceholderFragment.newInstance(position + 1);
             else
