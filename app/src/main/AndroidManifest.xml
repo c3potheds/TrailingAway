@@ -17,7 +17,9 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="cmsc434.trailingaway.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,15 +28,21 @@
         </activity>
         <activity
             android:name="cmsc434.trailingaway.MapActivity"
-            android:label="@string/title_activity_map" >
+            android:label="@string/title_activity_map"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="cmsc434.trailingaway.RoutesActivity"
-            android:label="@string/title_activity_routes" >
+            android:label="@string/title_activity_routes"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="cmsc434.trailingaway.SaveActivity"
-            android:label="@string/title_activity_save" >
+            android:label="@string/title_activity_save"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
         </activity>
 
         <meta-data
@@ -50,7 +58,9 @@
         </activity>
         <activity
             android:name="cmsc434.trailingaway.MapsActivity"
-            android:label="@string/title_activity_maps" >
+            android:label="@string/title_activity_maps"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

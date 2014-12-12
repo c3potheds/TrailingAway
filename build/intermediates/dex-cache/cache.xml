@@ -2,58 +2,10 @@
 <pre-dex-items>
 
     <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-835d71f3f44de6ceef88e5d505bccfa68cd36b26.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/classes-8f4ee8e3a82fccff9497aabd5c907814e3e92778.jar"
+        jar="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/classes.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\gson-2.2.4-f56064ac65a2813e1adcbd9c3049c4aad66129d9.jar"
-        jar="C:\Users\Sam\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.2.4\a60a5e993c98c864010053cb901b7eab25306568\gson-2.2.4.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="a60a5e993c98c864010053cb901b7eab25306568"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-63accd62729b9ce54c6893f67cff535f4e82a435.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\support-v13\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="2c2071dcaf7a008c3b01a6381a33be55396bab09"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-5c8e96095ef4493e3fd486c0edebcc35a94831ad.jar"
-        jar="C:\Users\Sam\AppData\Local\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-80468daf3158f8330c8cbb3b0c1b1fdc99d46324.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-4966eb581e1efaeaeff7fc0745900ed8c30dc294.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-5330d46e322cd216f8bbbc7733b1c3f18da48580.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-c85d19aae917e7fab63e42bb2e19b48e101eb888.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.google.maps.android\android-maps-utils\0.3.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="930e8ad21abe9439e61d5f4da51cf01d01f18f4d"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-d167879b9c6ff464750042e4593c00585822fbb1.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\support-v13\21.0.3\libs\internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="0dcc55e70f7ebf7238fe2ec53f662eb378ab2668"/>
+        sha1="0f6d5c1ef2e982c3b7858408e3df389cf5d202da"/>
 
 </pre-dex-items>

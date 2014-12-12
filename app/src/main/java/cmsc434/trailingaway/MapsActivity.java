@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -60,14 +62,14 @@ public class MapsActivity extends FragmentActivity implements
     static final float PATH_WIDTH = 5f;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    private List<LatLng> _path;
+    private TrailingAwayPath _path;
     private LatLng _previous;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        _path = new ArrayList<LatLng>();
+        _path = new TrailingAwayPath();
         mLocationClient = new LocationClient(this, this, this);
         mUpdatesRequested = false;
         mLocationRequest = LocationRequest.create();
@@ -126,7 +128,7 @@ public class MapsActivity extends FragmentActivity implements
     public void onSaveRouteClick(View view) {
         Log.i("map", "onSaveRouteClick");
         Intent intent = new Intent(this, SaveActivity.class);
-        intent.putExtra("path", _path.toArray());
+        intent.putExtra("path", _path);
         startActivity(intent);
     }
 
@@ -159,7 +161,8 @@ public class MapsActivity extends FragmentActivity implements
             boundsBuilder.include(latLng);
         }
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(
-                boundsBuilder.build(), 10));
+                boundsBuilder.build(), 100));
+
     }
 
 
