@@ -7,34 +7,17 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center_horizontal|top">
+        android:layout_gravity="center_horizontal|top"
+        android:weightSum="1">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <view
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Accuracy: 0 m"
-            android:id="@+id/textViewAccuracy"
-            android:layout_gravity="left|top" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GPS Status: UNAVAILABLE"
-            android:id="@+id/textViewGPSStatus" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location: 0, 0"
-            android:id="@+id/textViewLocation" />
+            class="com.google.android.gms.maps.MapView"
+            android:id="@+id/mapView"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.93" />
     </LinearLayout>
-
-    <view
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        class="cmsc434.trailingaway.TAMapView"
-        android:id="@+id/mapView"
-        android:layout_gravity="center" />
 
     <Button
         android:layout_width="wrap_content"

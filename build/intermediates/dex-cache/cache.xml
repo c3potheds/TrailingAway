@@ -2,58 +2,58 @@
 <pre-dex-items>
 
     <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-835d71f3f44de6ceef88e5d505bccfa68cd36b26.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.5.87\classes.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\gson-2.2.4-f56064ac65a2813e1adcbd9c3049c4aad66129d9.jar"
-        jar="C:\Users\Sam\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.2.4\a60a5e993c98c864010053cb901b7eab25306568\gson-2.2.4.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="a60a5e993c98c864010053cb901b7eab25306568"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-63accd62729b9ce54c6893f67cff535f4e82a435.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\support-v13\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="2c2071dcaf7a008c3b01a6381a33be55396bab09"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-5c8e96095ef4493e3fd486c0edebcc35a94831ad.jar"
-        jar="C:\Users\Sam\AppData\Local\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-80468daf3158f8330c8cbb3b0c1b1fdc99d46324.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-cdce3c65ee40d899bdc521afda9d0a354b9d03d8.jar"
+        jar="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.1"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03"/>
     <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-4966eb581e1efaeaeff7fc0745900ed8c30dc294.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.1"
-        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8"/>
-    <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-5330d46e322cd216f8bbbc7733b1c3f18da48580.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/classes-087dfdccb4250b82efb22802a3cf6c1036007558.jar"
+        jar="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.1"
         sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7"/>
     <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\classes-c85d19aae917e7fab63e42bb2e19b48e101eb888.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.google.maps.android\android-maps-utils\0.3.3\classes.jar"
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/classes-a3649c43ec53b93e43f356c3bad6d7a39be634c9.jar"
+        jar="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8"/>
+    <item
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-425db5a881eb4e89c607519c72f365b8a4f9bb0b.jar"
+        jar="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/exploded-aar/com.android.support/support-v13/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="0dcc55e70f7ebf7238fe2ec53f662eb378ab2668"/>
+    <item
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-4a3451217818f3fa9e04c6957b8d3d12621a1ee0.jar"
+        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35"/>
+    <item
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/classes-cd5175f03badb375eb0f3cf1a867b23774e753a3.jar"
+        jar="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/exploded-aar/com.google.maps.android/android-maps-utils/0.3.3/classes.jar"
         jumboMode="false"
         revision="21.1.1"
         sha1="930e8ad21abe9439e61d5f4da51cf01d01f18f4d"/>
     <item
-        dex="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-d167879b9c6ff464750042e4593c00585822fbb1.jar"
-        jar="C:\Users\Sam\Documents\TrailingAwayGithub\app\build\intermediates\exploded-aar\com.android.support\support-v13\21.0.3\libs\internal_impl-21.0.3.jar"
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/classes-b1a3f618d259a029ce6cb1cf89aba011d960be59.jar"
+        jar="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
         jumboMode="false"
         revision="21.1.1"
-        sha1="0dcc55e70f7ebf7238fe2ec53f662eb378ab2668"/>
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256"/>
+    <item
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/classes-21f36f5f7e837e65b18e89a08ee8946687f3f035.jar"
+        jar="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/exploded-aar/com.android.support/support-v13/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="2c2071dcaf7a008c3b01a6381a33be55396bab09"/>
+    <item
+        dex="/Users/apple/AndroidStudioProjects/TrailingAway/app/build/intermediates/pre-dexed/debug/gson-2.2.4-6f9d7fd22a370a58cac8678b332d15f665380336.jar"
+        jar="/Users/apple/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"
+        jumboMode="false"
+        revision="21.1.1"
+        sha1="a60a5e993c98c864010053cb901b7eab25306568"/>
 
 </pre-dex-items>
