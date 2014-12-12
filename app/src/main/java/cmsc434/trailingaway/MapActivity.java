@@ -2,13 +2,16 @@ package cmsc434.trailingaway;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.maps.android.PolyUtil;
@@ -33,6 +36,12 @@ public class MapActivity extends Activity implements LocationListener {
 
     }
 
+
+    public void onSaveRouteClick(View view) {
+        Log.i("map", "onSaveRouteClick");
+        Intent intent = new Intent(this, SaveActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

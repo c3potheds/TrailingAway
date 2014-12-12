@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_routes">Routes</string>
+    <string name="title_activity_save">Save Route</string>
     <string name="title_section1">My Routes</string>
     <string name="title_section2">NFC Download</string>
     <string name="route_file">routes.json</string>
@@ -13,4 +14,9 @@
     <string name="landmark_file">landmarks.json</string>
     <string name="title_activity_display_route">Map</string>
 
+    <string-array name="route_type">
+        <item>Walk</item>
+        <item>Bicycle</item>
+        <item>Hike</item>
+    </string-array>
 </resources>
