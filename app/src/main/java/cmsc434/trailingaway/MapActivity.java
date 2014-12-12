@@ -17,8 +17,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
+//import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
@@ -29,12 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapActivity extends Activity implements GoogleMap.OnMyLocationChangeListener, OnMapReadyCallback {
+public class MapActivity extends Activity implements GoogleMap.OnMyLocationChangeListener{
 
     public static final float PATH_WIDTH = 5.0f;
 
-    private MapView _mapView;
-
+    private TAMapView _TA_mapView;
     private List<LatLng> _path;
     private LatLng _previous;
 
@@ -43,40 +41,9 @@ public class MapActivity extends Activity implements GoogleMap.OnMyLocationChang
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        _mapView = (MapView)findViewById(R.id.mapView);
-        _mapView.getMapAsync(this);
+        _TA_mapView = (TAMapView)findViewById(R.id.mapView);
+        //_TA_mapView.getMapAsync(this);
         _path = new ArrayList<LatLng>();
-        _mapView.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        _mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        _mapView.onLowMemory();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        _mapView.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        _mapView.onResume();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        _mapView.onSaveInstanceState(outState);
     }
 
 
@@ -114,7 +81,7 @@ public class MapActivity extends Activity implements GoogleMap.OnMyLocationChang
             _previous = current;
             return;
         }
-        _mapView.getMap().addPolyline(new PolylineOptions()
+        _TA_mapView.getMap().addPolyline(new PolylineOptions()
                 .add(_previous, current)
                 .width(PATH_WIDTH)
                 .color(Color.BLUE));
@@ -122,17 +89,13 @@ public class MapActivity extends Activity implements GoogleMap.OnMyLocationChang
         for (LatLng latLng : _path) {
             boundsBuilder.include(latLng);
         }
-        _mapView.getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(
-                boundsBuilder.build(), _mapView.getWidth()*3/4, _mapView.getHeight()*3/4,10));
+        _TA_mapView.getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(
+                boundsBuilder.build(), _TA_mapView.getWidth()*3/4, _TA_mapView.getHeight()*3/4,10));
     }
 
-    @Override
+    //@Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setOnMyLocationChangeListener(this);
-        googleMap.setMyLocationEnabled(true);
-        Location myLocation = googleMap.getMyLocation();
-        LatLng zoomLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLocation, 20.0f));
     }
 
     /*

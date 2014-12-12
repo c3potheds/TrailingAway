@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
     }
 
     public void onButtonStart(View view) {
-        Intent intent = new Intent(this, MapActivity.class);
+        Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
 
     }

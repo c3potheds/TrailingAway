@@ -48,6 +48,10 @@
             android:name="cmsc434.trailingaway.DisplayRoute"
             android:label="@string/title_activity_display_route" >
         </activity>
+        <activity
+            android:name="cmsc434.trailingaway.MapsActivity"
+            android:label="@string/title_activity_maps" >
+        </activity>
     </application>
 
 </manifest>
