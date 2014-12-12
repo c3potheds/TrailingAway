@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -98,18 +101,20 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
         Button button = (Button) rowView.findViewById(R.id.routeButton);
         //Make this object final so that we can access it in the inner class - can be avoided if we
         //make this an actual class w/constructor
-        final RouteRowData data = values[position];
 
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //TODO: This method will start an activity that will display the route located at
-//                // location given by the GSON
-//                JSONUtils.gsonToLatLonList();
-//                JSONUtils.gsonToLandmarks();
-//                data.getFolderLocation();
-//            }
-//        });
+        button.setTag(values[position].getFolderLocation());
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String folderLocation = (String) v.getTag();
+                //TODO: This method will start an activity that will display the route located at
+                Intent intent = new Intent(getContext(), DisplayRoute.class);
+                //Pass the lists to the activity
+                intent.putExtra("folderLocation", folderLocation);
+
+                getContext().startActivity(intent);
+            }
+        });
 
         return rowView;
     }

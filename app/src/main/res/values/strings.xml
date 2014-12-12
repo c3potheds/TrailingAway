@@ -8,5 +8,9 @@
     <string name="title_activity_routes">Routes</string>
     <string name="title_section1">My Routes</string>
     <string name="title_section2">NFC Download</string>
+    <string name="route_file">routes.json</string>
+    <string name="latlng_file">coords.json</string>
+    <string name="landmark_file">landmarks.json</string>
+    <string name="title_activity_display_route">Map</string>
 
 </resources>

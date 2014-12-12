@@ -35,9 +35,9 @@ public class RoutesListFragment extends ListFragment {
             list.add(values[i]);
         }
 
-        String result = JSONUtils.routeDataToGson(list, filesDir + "Test.json");
+        String result = JSONUtils.routeDataToGson(list, filesDir + R.string.route_file);
 
-        List<RouteRowData> fromFile = JSONUtils.getRouteRowData(filesDir + "Test.json");
+        List<RouteRowData> fromFile = JSONUtils.getRouteRowData(filesDir + R.string.route_file);
         RouteRowData[] vals = (RouteRowData[]) fromFile.toArray(values);
         RoutesArrayAdapter adapter = new RoutesArrayAdapter(getActivity(), vals);
         setListAdapter(adapter);
