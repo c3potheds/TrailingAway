@@ -46,6 +46,37 @@ public class MapActivity extends Activity implements GoogleMap.OnMyLocationChang
         _mapView = (MapView)findViewById(R.id.mapView);
         _mapView.getMapAsync(this);
         _path = new ArrayList<LatLng>();
+        _mapView.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        _mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        _mapView.onLowMemory();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        _mapView.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        _mapView.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        _mapView.onSaveInstanceState(outState);
     }
 
 
