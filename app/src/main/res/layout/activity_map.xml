@@ -32,7 +32,7 @@
     <view
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        class="cmsc434.trailingaway.MapView"
+        class="cmsc434.trailingaway.TAMapView"
         android:id="@+id/mapView"
         android:layout_gravity="center" />
 

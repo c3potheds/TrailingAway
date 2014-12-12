@@ -3,6 +3,7 @@ package cmsc434.trailingaway;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,32 +15,38 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class MapActivity extends Activity implements LocationListener {
 
-    private LocationManager _locationManager;
-    private MapView _mapView;
+public class MapActivity extends Activity implements GoogleMap.OnMyLocationChangeListener {
+
+    public static final float PATH_WIDTH = 5.0f;
+
+    private TAMapView _TA_mapView;
+    private List<LatLng> _path;
+    private LatLng _previous;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        _mapView = (MapView)findViewById(R.id.mapView);
-        _locationManager = (LocationManager)this.getSystemService(
-                Context.LOCATION_SERVICE);
-        //Use GPS, poll every 1000 milliseconds
-        _locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
-
-
-
+        _TA_mapView = (TAMapView)findViewById(R.id.mapView);
+        _path = new ArrayList<LatLng>();
     }
 
 
     public void onSaveRouteClick(View view) {
         Log.i("map", "onSaveRouteClick");
         Intent intent = new Intent(this, SaveActivity.class);
+        intent.putExtra("path", _path.toArray());
         startActivity(intent);
     }
 
@@ -63,15 +70,31 @@ public class MapActivity extends Activity implements LocationListener {
     }
 
     @Override
+    public void onMyLocationChange(Location location) {
+        LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+        _path.add(current);
+        if (_previous == null) {
+            _previous = current;
+            return;
+        }
+        _TA_mapView.getMap().addPolyline(new PolylineOptions()
+                .add(_previous, current)
+                .width(PATH_WIDTH)
+                .color(Color.BLUE));
+
+    }
+
+    /*
+    @Override
     public void onLocationChanged(Location location) {
 
         TextView locationTextView = (TextView)findViewById(R.id.textViewLocation);
 
-        locationTextView.setText("Location: " + _mapView.longitudeToX(location) + ", " +
-                _mapView.latitudeToY(location));
+        locationTextView.setText("Location: " + _TA_mapView.longitudeToX(location) + ", " +
+                _TA_mapView.latitudeToY(location));
         TextView accuracyView = (TextView)findViewById(R.id.textViewAccuracy);
         accuracyView.setText("Accuracy: " + location.getAccuracy() + " m");
-        _mapView.updateLocation(location);
+        _TA_mapView.updateLocation(location);
 
     }
 
@@ -100,5 +123,6 @@ public class MapActivity extends Activity implements LocationListener {
     public void onProviderDisabled(String provider) {
         System.out.println(provider + " disabled");
     }
+    */
 
 }

@@ -20,10 +20,48 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
+
 /**
  * Created by Simeon on 12/4/14.
  */
-public class MapView extends View {
+public class TAMapView extends MapView {
+
+    private GoogleMap _map;
+
+    public TAMapView(Context context) {
+        super(context);
+        init(context, null, 0);
+    }
+
+    public TAMapView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        init(context, attributeSet, 0);
+    }
+
+    public TAMapView(Context context, AttributeSet attributeSet, int defStyle) {
+        super(context, attributeSet, defStyle);
+        init(context, attributeSet, defStyle);
+    }
+
+    private void init(Context context, AttributeSet attributeSet, final int defStyle) {
+        getMapAsync(new OnMapReadyCallback() {
+            public void onMapReady(GoogleMap googleMap) {
+                _map = googleMap;
+                _map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                    @Override
+                    public void onMyLocationChange(Location newLocation) {
+
+                    }
+                });
+            }
+        });
+    }
+
+    /*
 
     //private boolean _isRecording = true;
     private Path _path = new Path();
@@ -36,17 +74,17 @@ public class MapView extends View {
     private boolean _zooming = false;
     private ScaleGestureDetector _scaleDetector;
 
-    public MapView(Context context) {
+    public TAMapView(Context context) {
         super(context);
         init(context, null, 0);
     }
 
-    public MapView(Context context, AttributeSet attributeSet) {
+    public TAMapView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         init(context, attributeSet, 0);
     }
 
-    public MapView(Context context, AttributeSet attributeSet, int defStyle) {
+    public TAMapView(Context context, AttributeSet attributeSet, int defStyle) {
         super(context, attributeSet, defStyle);
         init(context, attributeSet, defStyle);
     }
@@ -118,7 +156,7 @@ public class MapView extends View {
         canvas.drawLine(x1, y1, x2, y2, _cursorPaint);
         canvas.drawLine(x2, y2, x3, y3, _cursorPaint);
         canvas.drawLine(x3, y3, x1, y1, _cursorPaint);
-        
+
     }
 
     public float longitudeToX(Location location) {
@@ -136,4 +174,6 @@ public class MapView extends View {
         return getHeight()/2 + _startLocation.distanceTo(location) *
                 (float)Math.sin(-_startLocation.bearingTo(location)+90);
     }
+
+*/
 }
