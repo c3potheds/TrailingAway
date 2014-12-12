@@ -30,8 +30,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
  */
 public class TAMapView extends MapView {
 
-    private GoogleMap _map;
-
     public TAMapView(Context context) {
         super(context);
         init(context, null, 0);
@@ -48,17 +46,7 @@ public class TAMapView extends MapView {
     }
 
     private void init(Context context, AttributeSet attributeSet, final int defStyle) {
-        getMapAsync(new OnMapReadyCallback() {
-            public void onMapReady(GoogleMap googleMap) {
-                _map = googleMap;
-                _map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-                    @Override
-                    public void onMyLocationChange(Location newLocation) {
-
-                    }
-                });
-            }
-        });
+        //pass
     }
 
     /*

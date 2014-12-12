@@ -15,8 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
@@ -25,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapActivity extends Activity implements GoogleMap.OnMyLocationChangeListener {
+public class MapActivity extends Activity implements GoogleMap.OnMyLocationChangeListener, OnMapReadyCallback {
 
     public static final float PATH_WIDTH = 5.0f;
 
@@ -39,6 +42,7 @@ public class MapActivity extends Activity implements GoogleMap.OnMyLocationChang
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         _TA_mapView = (TAMapView)findViewById(R.id.mapView);
+        _TA_mapView.getMapAsync(this);
         _path = new ArrayList<LatLng>();
     }
 
@@ -81,7 +85,17 @@ public class MapActivity extends Activity implements GoogleMap.OnMyLocationChang
                 .add(_previous, current)
                 .width(PATH_WIDTH)
                 .color(Color.BLUE));
+        LatLngBounds.Builder boundsBuilder = LatLngBounds.builder();
+        for (LatLng latLng : _path) {
+            boundsBuilder.include(latLng);
+        }
+        _TA_mapView.getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(
+                boundsBuilder.build(), _TA_mapView.getWidth()*3/4, _TA_mapView.getHeight()*3/4,10));
+    }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.setOnMyLocationChangeListener(this);
     }
 
     /*
