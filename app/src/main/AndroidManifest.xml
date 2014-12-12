@@ -32,6 +32,10 @@
             android:name="cmsc434.trailingaway.RoutesActivity"
             android:label="@string/title_activity_routes" >
         </activity>
+        <activity
+            android:name="cmsc434.trailingaway.SaveActivity"
+            android:label="@string/title_activity_save" >
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
