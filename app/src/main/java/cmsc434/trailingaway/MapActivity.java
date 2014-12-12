@@ -129,6 +129,10 @@ public class MapActivity extends Activity implements GoogleMap.OnMyLocationChang
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setOnMyLocationChangeListener(this);
+        googleMap.setMyLocationEnabled(true);
+        Location myLocation = googleMap.getMyLocation();
+        LatLng zoomLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomLocation, 20.0f));
     }
 
     /*
