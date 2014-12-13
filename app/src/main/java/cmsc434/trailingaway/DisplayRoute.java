@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cmsc434.trailingaway.utilities.JSONUtils;
@@ -21,7 +22,7 @@ import cmsc434.trailingaway.utilities.JSONUtils;
 public class DisplayRoute extends FragmentActivity {
 
     private String folderLocation;
-    private List<LatLng> latLngs;
+    private TrailingAwayPath latLngs;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -29,7 +30,7 @@ public class DisplayRoute extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         folderLocation = getIntent().getStringExtra("folderLocation");
-        latLngs = (ArrayList<LatLng>) JSONUtils.gsonToLatLonList(folderLocation + R.string.latlng_file);
+        latLngs = (TrailingAwayPath) JSONUtils.gsonToLatLonList(folderLocation + R.string.latlng_file);
         setUpMapIfNeeded();
     }
 
@@ -74,12 +75,15 @@ public class DisplayRoute extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addPolyline(new PolylineOptions()
-                .add((LatLng[])latLngs.toArray())
+        PolylineOptions plo = new PolylineOptions();
+        Iterator<LatLng> iter = latLngs.iterator();
+        while (iter.hasNext()) {
+            plo.add(iter.next());
+        }
+        mMap.addPolyline(plo
                 .width(5)
                 .color(Color.BLUE));
 
-        //TODO: Check to see if this works
         //This should make our map zoom to fit the route
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
         for(LatLng ll : latLngs)

@@ -2,10 +2,13 @@ package cmsc434.trailingaway;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +16,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -20,6 +25,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -139,8 +145,44 @@ public class MapsActivity extends FragmentActivity implements
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
+
+        mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.setMyLocationEnabled(true);
         mLocationClient.connect();
+
+        //Set it to last location
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        List<String> matchingProviders = locationManager.getAllProviders();
+        Location bestResult = null;
+        float bestAccuracy = Float.MAX_VALUE;
+        float bestTime = Float.MAX_VALUE;
+        float minTime = Float.MIN_VALUE;
+        for (String provider: matchingProviders) {
+            Location location = locationManager.getLastKnownLocation(provider);
+            if (location != null) {
+                float accuracy = location.getAccuracy();
+                long time = location.getTime();
+
+                if ((time > minTime && accuracy < bestAccuracy)) {
+                    bestResult = location;
+                    bestAccuracy = accuracy;
+                    bestTime = time;
+                }
+                else if (time < minTime &&
+                        bestAccuracy == Float.MAX_VALUE && time > bestTime){
+                    bestResult = location;
+                    bestTime = time;
+                }
+            }
+        }
+
+        if(bestResult != null) {
+            LatLng last = new LatLng(bestResult.getLatitude(), bestResult.getLongitude());
+            CameraUpdate center = CameraUpdateFactory.newLatLng(last);
+            mMap.moveCamera(center);
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+            mMap.moveCamera(zoom);
+        }
     }
 
     @Override
@@ -213,41 +255,41 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 //
-//    private boolean servicesConnected() {
-//        // Check that Google Play services is available
-//        int resultCode =
-//                GooglePlayServicesUtil.
-//                        isGooglePlayServicesAvailable(this);
-//        // If Google Play services is available
-//        if (ConnectionResult.SUCCESS == resultCode) {
-//            // In debug mode, log the status
-//            Log.d("Location Updates",
-//                    "Google Play services is available.");
-//            // Continue
-//            return true;
-//            // Google Play services was not available for some reason.
-//            // resultCode holds the error code.
-//        } else {
-//            // Get the error dialog from Google Play services
-//            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(
-//                    resultCode,
-//                    this,
-//                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
-//
-//            // If Google Play services can provide an error dialog
-//            if (errorDialog != null) {
-//                // Create a new DialogFragment for the error dialog
-//                ErrorDialogFragment errorFragment =
-//                        new ErrorDialogFragment();
-//                // Set the dialog in the DialogFragment
-//                errorFragment.setDialog(errorDialog);
-//                // Show the error dialog in the DialogFragment
-//                errorFragment.show(getSupportFragmentManager(),
-//                        "Location Updates");
-//            }
-//        }
-//        return true;
-//    }
+    private boolean servicesConnected() {
+        // Check that Google Play services is available
+        int resultCode =
+                GooglePlayServicesUtil.
+                        isGooglePlayServicesAvailable(this);
+        // If Google Play services is available
+        if (ConnectionResult.SUCCESS == resultCode) {
+            // In debug mode, log the status
+            Log.d("Location Updates",
+                    "Google Play services is available.");
+            // Continue
+            return true;
+            // Google Play services was not available for some reason.
+            // resultCode holds the error code.
+        } else {
+            // Get the error dialog from Google Play services
+            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(
+                    resultCode,
+                    this,
+                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
+
+            // If Google Play services can provide an error dialog
+            if (errorDialog != null) {
+                // Create a new DialogFragment for the error dialog
+                ErrorDialogFragment errorFragment =
+                        new ErrorDialogFragment();
+                // Set the dialog in the DialogFragment
+                errorFragment.setDialog(errorDialog);
+                // Show the error dialog in the DialogFragment
+                errorFragment.show(getSupportFragmentManager(),
+                        "Location Updates");
+            }
+        }
+        return true;
+    }
 
     /*
      * Called by Location Services when the request to connect the
@@ -300,6 +342,12 @@ public class MapsActivity extends FragmentActivity implements
              */
             //showErrorDialog(connectionResult.getErrorCode());
         }
+    }
+
+    public void onAddLandmarkClick(View v) {
+        Log.d("Maps", "AddLandmarkClick");
+        LandmarkFragment fragment = LandmarkFragment.newInstance("","");
+
     }
 
 }

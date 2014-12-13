@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cmsc434.trailingaway.RouteRowData;
+import cmsc434.trailingaway.TrailingAwayPath;
 
 /**
  * Created by Bryan on 12/9/2014.
@@ -62,11 +63,11 @@ public class JSONUtils {
         routeDataToGson(list, fileName);
     }
 
-    public static List<?> gsonToLatLonList(String fileName) {
+    public static TrailingAwayPath gsonToLatLonList(String fileName) {
         Gson gson = new Gson();
         try {
             FileReader fr = new FileReader(fileName);
-            return gson.fromJson(fr, new TypeToken<ArrayList<LatLng>>() {
+            return gson.fromJson(fr, new TypeToken<TrailingAwayPath>() {
             }.getType());
         } catch (FileNotFoundException e) {
             Log.e("ERROR", "Can't find file", e);
@@ -75,7 +76,7 @@ public class JSONUtils {
         return null;
     }
 
-    public static void latLonListToGson(String fileName, List<LatLng> data) {
+    public static void latLonListToGson(String fileName, TrailingAwayPath data) {
         Gson gson = new Gson();
         try {
             FileWriter fw = new FileWriter(fileName);

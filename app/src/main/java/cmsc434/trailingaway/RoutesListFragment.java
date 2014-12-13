@@ -24,22 +24,17 @@ public class RoutesListFragment extends ListFragment {
         if (bundle != null)
             filesDir = bundle.getString("filesDir") + "/";
 
-        //TODO: Remove this placeholder once we can save routes
-        RouteRowData[] values = new RouteRowData[] {
-                null,
-                new RouteRowData(RouteType.BIKE, "Hello", "Hello"),
-                new RouteRowData(RouteType.WALK, "Walking route", "Hello")};
-        ArrayList<RouteRowData> list = new ArrayList<RouteRowData>();
-
-        for(int i = 0; i < values.length; i++) {
-            list.add(values[i]);
+        List<RouteRowData> fromFile = JSONUtils.getRouteRowData(filesDir + getString(R.string.route_file));
+        RouteRowData[] vals = (RouteRowData[]) fromFile.toArray(new RouteRowData[]{});
+        if(getListAdapter() == null) {
+            RoutesArrayAdapter adapter = new RoutesArrayAdapter(getActivity(), vals);
+            setListAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            Log.d("RoutesListFragment", "Adapter already made");
+            RoutesArrayAdapter adapter = (RoutesArrayAdapter) getListAdapter();
+            adapter.clear();
+            adapter.addAll(vals);
         }
-
-        String result = JSONUtils.routeDataToGson(list, filesDir + R.string.route_file);
-
-        List<RouteRowData> fromFile = JSONUtils.getRouteRowData(filesDir + R.string.route_file);
-        RouteRowData[] vals = (RouteRowData[]) fromFile.toArray(values);
-        RoutesArrayAdapter adapter = new RoutesArrayAdapter(getActivity(), vals);
-        setListAdapter(adapter);
     }
 }

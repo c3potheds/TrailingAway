@@ -80,6 +80,9 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
         TextView routeName = (TextView) rowView.findViewById(R.id.firstLine);
         routeName.setText(values[position].getTitle());
 
+        TextView desc = (TextView) rowView.findViewById(R.id.secondLine);
+        desc.setText(values[position].getDescription());
+
         //Set route icon
         ImageView icon = (ImageView) rowView.findViewById(R.id.icon);
         switch (values[position].getRouteType()) {

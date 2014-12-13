@@ -7,8 +7,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.io.File;
+
+import cmsc434.trailingaway.utilities.JSONUtils;
 
 /**
  * Created by Sam on 12/11/2014.
@@ -17,11 +25,15 @@ public class SaveActivity extends Activity {
 
     private RouteRowData data;
     private RouteType routeType = RouteType.WALK;
-
+    private TrailingAwayPath _path;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save);
+
+        _path = getIntent().getParcelableExtra("path");
+
+        data = new RouteRowData(null, null, null, null);
 
         final Spinner spinner = (Spinner) findViewById(R.id.route_type);
         final ImageView img = (ImageView) findViewById(R.id.route_type_image);
@@ -41,6 +53,8 @@ public class SaveActivity extends Activity {
                     routeType = RouteType.HIKE;
                     img.setImageResource(R.drawable.ic_hiker);
                 }
+
+                data.setRouteType(routeType);
             }
 
             @Override
@@ -73,6 +87,16 @@ public class SaveActivity extends Activity {
     }
 
     public void onSaveClick(View view) {
+        EditText name = (EditText) findViewById(R.id.route_name);
+        name = (EditText) findViewById(R.id.route_name);
+        data.setTitle(name.getText().toString());
+        EditText desc = (EditText) findViewById(R.id.description);
+        data.setDescription(desc.getText().toString());
+        data.setFolderLocation(getFilesDir() + "/" + data.getTitle() + "/");
+        File dir = new File(data.getFolderLocation());
+        dir.mkdir();
+        JSONUtils.addRouteDataToGson(data, getFilesDir() + "/" + getString(R.string.route_file));
+        JSONUtils.latLonListToGson(data.getFolderLocation() + getString(R.string.latlng_file), _path);
 
         Intent intent = new Intent(this, RoutesActivity.class);
         startActivity(intent);
