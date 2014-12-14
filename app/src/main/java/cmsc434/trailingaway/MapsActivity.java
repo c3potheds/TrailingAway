@@ -9,6 +9,7 @@ import android.graphics.Camera;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
@@ -16,6 +17,9 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -40,7 +44,8 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,
+        LandmarkFragment.OnFragmentInteractionListener{
 
     /*
  * Define a request code to send to Google Play services
@@ -67,6 +72,7 @@ public class MapsActivity extends FragmentActivity implements
     boolean mUpdatesRequested;
     static final float PATH_WIDTH = 5f;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private View _hiddenPanel;
 
     private TrailingAwayPath _path;
     private LatLng _previous;
@@ -82,6 +88,7 @@ public class MapsActivity extends FragmentActivity implements
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(MILLISECONDS_PER_SECOND);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        _hiddenPanel = findViewById(R.id.layoutLandmarkPanel);
         setUpMapIfNeeded();
     }
 
@@ -207,7 +214,10 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
+    }
 
 
     // Define a DialogFragment that displays the error dialog
@@ -345,9 +355,32 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     public void onAddLandmarkClick(View v) {
-        Log.d("Maps", "AddLandmarkClick");
-        LandmarkFragment fragment = LandmarkFragment.newInstance("","");
+        //Log.d("Maps", "AddLandmarkClick");
+        //LandmarkFragment fragment = LandmarkFragment.newInstance("","");
 
+        if (!isPanelShown()) {
+            // Show the panel
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.bottom_up);
+
+            _hiddenPanel.startAnimation(bottomUp);
+            _hiddenPanel.setVisibility(View.VISIBLE);
+        }
+        else {
+            // Hide the Panel
+            Animation bottomDown = AnimationUtils.loadAnimation(this,
+                    R.anim.bottom_down);
+
+            _hiddenPanel.startAnimation(bottomDown);
+            _hiddenPanel.setVisibility(View.GONE);
+        }
+
+
+
+    }
+
+    private boolean isPanelShown() {
+        return _hiddenPanel.getVisibility() == View.VISIBLE;
     }
 
 }

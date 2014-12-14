@@ -11,7 +11,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_above="@+id/buttonBar"/>
+            android:layout_above="@+id/buttonBar"
+            tools:layout="@layout/fragment_landmark" />
 
         <LinearLayout
             android:id="@+id/buttonBar"
@@ -37,4 +38,29 @@
                 android:onClick="onAddLandmarkClick"
                 android:id="@+id/buttonAddLandmark"/>
         </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Route"
+        android:id="@+id/textViewRouteName"
+        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:editable="true"
+        android:layout_gravity="center_horizontal|top" />
+
+    <RelativeLayout
+        android:id="@+id/layoutLandmarkPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wallet_dim_foreground_holo_dark"
+        android:visibility="gone">
+
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="cmsc434.trailingaway.LandmarkFragment"
+            android:id="@+id/fragmentAddLandmark"
+            tools:layout="@layout/fragment_landmark" />
+    </RelativeLayout>
 </FrameLayout>
