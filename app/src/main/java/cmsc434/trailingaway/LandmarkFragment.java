@@ -1,14 +1,25 @@
 package cmsc434.trailingaway;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.LatLng;
 
 
 /**
@@ -30,7 +41,9 @@ public class LandmarkFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener _listener;
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     /**
      * Use this factory method to create a new instance of
@@ -59,6 +72,7 @@ public class LandmarkFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -66,21 +80,22 @@ public class LandmarkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_landmark, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        View v = inflater.inflate(R.layout.fragment_landmark, container, false);
+        Button save = (Button) v.findViewById(R.id.buttonAddLandmarkSave);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddLandmarkSaveClick(view);
+            }
+        });
+        return v;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            _listener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -90,19 +105,57 @@ public class LandmarkFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        _listener = null;
     }
 
     public void onAddPhotoClick(View view) {
-        
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageView photoView = (ImageView)getActivity().findViewById(R.id.imageViewPhoto);
+            photoView.setImageBitmap(imageBitmap);
+        }
+
     }
 
     public void onAddLandmarkSaveClick(View view) {
+        String name = ((EditText)getActivity().findViewById(
+                R.id.editTextName)).getText().toString();
+        String description = ((EditText)getActivity().findViewById(
+                R.id.editTextDescription)).getText().toString();
+        Location location = ((MapView) getActivity().findViewById(R.id.map))
+                .getMap().getMyLocation();
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        ImageView viewPhoto = ((ImageView)getActivity().findViewById(R.id.imageViewPhoto));
+        viewPhoto.buildDrawingCache();
+        Bitmap photo = viewPhoto.getDrawingCache();
+
+
+        Landmark newLandmark = new Landmark(name, description, photo, latLng);
+        _listener.onLandmarkCreated(newLandmark);
+
+        Animation bottomDown = AnimationUtils.loadAnimation(getActivity().getBaseContext(),
+                R.anim.bottom_down);
+        View hiddenPanel = getActivity().findViewById(R.id.layoutLandmarkPanel);
+        hiddenPanel.startAnimation(bottomDown);
+        hiddenPanel.setVisibility(View.GONE);
 
     }
 
     public void onAddLandmarkCancelClick(View view) {
-
+        Animation bottomDown = AnimationUtils.loadAnimation(getActivity().getBaseContext(),
+                R.anim.bottom_down);
+        View hiddenPanel = getActivity().findViewById(R.id.layoutLandmarkPanel);
+        hiddenPanel.startAnimation(bottomDown);
+        hiddenPanel.setVisibility(View.GONE);
     }
 
 
@@ -118,7 +171,7 @@ public class LandmarkFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onLandmarkCreated(Landmark landmark);
     }
 
 }
