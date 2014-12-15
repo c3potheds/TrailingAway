@@ -5,13 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.graphics.Camera;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -19,9 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -33,19 +27,19 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationListener,
-        LandmarkFragment.OnFragmentInteractionListener{
+        LandmarkFragment.OnFragmentInteractionListener {
 
     /*
  * Define a request code to send to Google Play services
@@ -71,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements
     LocationClient mLocationClient;
     boolean mUpdatesRequested;
     static final float PATH_WIDTH = 5f;
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GoogleMap _map; // Might be null if Google Play services APK is not available.
     private View _hiddenPanel;
 
     private TrailingAwayPath _path;
@@ -113,7 +107,7 @@ public class MapsActivity extends FragmentActivity implements
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
+     * call {@link #setUpMap()} once when {@link #_map} is not null.
      * <p/>
      * If it isn't installed {@link SupportMapFragment} (and
      * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
@@ -127,12 +121,12 @@ public class MapsActivity extends FragmentActivity implements
      */
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
+        if (_map == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+            _map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
             // Check if we were successful in obtaining the map.
-            if (mMap != null) {
+            if (_map != null) {
                 setUpMap();
             }
         }
@@ -149,12 +143,12 @@ public class MapsActivity extends FragmentActivity implements
      * This is where we can add markers or lines, add listeners or move the camera. In this case, we
      * just add a marker near Africa.
      * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
+     * This should only be called once and when we are sure that {@link #_map} is not null.
      */
     private void setUpMap() {
 
-        mMap.getUiSettings().setZoomControlsEnabled(false);
-        mMap.setMyLocationEnabled(true);
+        _map.getUiSettings().setZoomControlsEnabled(false);
+        _map.setMyLocationEnabled(true);
         mLocationClient.connect();
 
         //Set it to last location
@@ -186,9 +180,9 @@ public class MapsActivity extends FragmentActivity implements
         if(bestResult != null) {
             LatLng last = new LatLng(bestResult.getLatitude(), bestResult.getLongitude());
             CameraUpdate center = CameraUpdateFactory.newLatLng(last);
-            mMap.moveCamera(center);
+            _map.moveCamera(center);
             CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
-            mMap.moveCamera(zoom);
+            _map.moveCamera(zoom);
         }
     }
 
@@ -200,7 +194,7 @@ public class MapsActivity extends FragmentActivity implements
             _previous = current;
             return;
         }
-        mMap.addPolyline(new PolylineOptions()
+        _map.addPolyline(new PolylineOptions()
                 .add(_previous, current)
                 .width(PATH_WIDTH)
                 .color(Color.BLUE));
@@ -209,14 +203,18 @@ public class MapsActivity extends FragmentActivity implements
         for (LatLng latLng : _path) {
             boundsBuilder.include(latLng);
         }
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(
+        _map.animateCamera(CameraUpdateFactory.newLatLngBounds(
                 boundsBuilder.build(), 100));
 
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onLandmarkCreated(Landmark landmark) {
+        _map.addMarker(new MarkerOptions()
+        .icon(BitmapDescriptorFactory.fromBitmap(landmark.getPhoto()))
+        .position(landmark.getLocation())
+        .title(landmark.getName())
+        .snippet(landmark.getDescription()));
     }
 
 

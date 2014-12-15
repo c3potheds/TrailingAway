@@ -3,8 +3,10 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:weightSum="1"
-    android:id="@+id/hi">
+    android:id="@+id/hi"
+    tools:context="cmsc434.trailingaway.LandmarkFragment">
 
     <LinearLayout
         android:orientation="horizontal"
