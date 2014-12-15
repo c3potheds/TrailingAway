@@ -5,8 +5,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:weightSum="1"
-    android:id="@+id/hi"
-    tools:context="cmsc434.trailingaway.LandmarkFragment">
+    android:id="@+id/hi" >
+    <!--tools:context="cmsc434.trailingaway.LandmarkFragment" >-->
 
     <LinearLayout
         android:orientation="horizontal"
@@ -57,31 +57,33 @@
         android:text="Add Photo"
         android:id="@+id/buttonAddPhoto"
         android:layout_gravity="center_horizontal"
-        android:onClick="onAddPhotoClick" />
+        android:onClick="onClick" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Save"
             android:id="@+id/buttonAddLandmarkSave"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:onClick="onAddLandmarkSaveClick"/>
+            android:onClick="onClick"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Cancel"
             android:id="@+id/buttonAddLandmarkCancel"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:onClick="onAddLandmarkCancelClick"/>
-    </RelativeLayout>
+            android:onClick="onClick"/>
+    </LinearLayout>
 </LinearLayout>

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cmsc434.trailingaway.Landmark;
 import cmsc434.trailingaway.RouteRowData;
 import cmsc434.trailingaway.TrailingAwayPath;
 
@@ -86,7 +87,7 @@ public class JSONUtils {
         }
     }
 
-    public static List<?> gsonToLandmarks(String fileName) {
+    public static List<Landmark> gsonToLandmarks(String fileName) {
         //TODO: implement a landmark class and change this to load it
         Gson gson = new Gson();
         try {
@@ -96,7 +97,17 @@ public class JSONUtils {
         } catch (FileNotFoundException e) {
             Log.e("ERROR", "Can't find file", e);
         }
-        return null;
+        return new ArrayList<Landmark>();
+    }
+
+    public static void landmarksToGson(String fileName, List<Landmark> data) {
+        Gson gson = new Gson();
+        try {
+            FileWriter fw = new FileWriter(fileName);
+            gson.toJson(data, fw);
+        } catch (IOException e) {
+            return;
+        }
     }
 
 }

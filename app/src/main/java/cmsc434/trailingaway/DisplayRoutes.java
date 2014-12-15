@@ -8,9 +8,9 @@ import android.content.IntentSender;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -35,11 +35,12 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements
+import cmsc434.trailingaway.utilities.JSONUtils;
+
+public class DisplayRoutes extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
-        LocationListener,
-        LandmarkFragment.OnFragmentInteractionListener {
+        LocationListener {
 
     /*
  * Define a request code to send to Google Play services
@@ -69,15 +70,18 @@ public class MapsActivity extends FragmentActivity implements
     private View _hiddenPanel;
 
     private TrailingAwayPath _path;
-    private ArrayList<Landmark> _landmarks;
-    private LatLng _previous;
+    private List<Landmark> _landmarks;
+    private String folderLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        folderLocation = getIntent().getStringExtra("folderLocation");
+        _path = JSONUtils.gsonToLatLonList(folderLocation + R.string.latlng_file);
+        _landmarks = JSONUtils.gsonToLandmarks(folderLocation + R.string.landmark_file);
+
+        setContentView(R.layout.activity_display_route);
         _path = new TrailingAwayPath();
-        _landmarks = new ArrayList<Landmark>();
         mLocationClient = new LocationClient(this, this, this);
         mUpdatesRequested = false;
         mLocationRequest = LocationRequest.create();
@@ -111,14 +115,14 @@ public class MapsActivity extends FragmentActivity implements
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
      * call {@link #setUpMap()} once when {@link #_map} is not null.
      * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
+     * If it isn't installed {@link com.google.android.gms.maps.SupportMapFragment} (and
      * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
      * install/update the Google Play services APK on their device.
      * <p/>
      * A user can return to this FragmentActivity after following the prompt and correctly
      * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
      * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
+     * stopped or paused), {@link #onCreate(android.os.Bundle)} may not be called again so we should call this
      * method in {@link #onResume()} to guarantee that it will be called.
      */
     private void setUpMapIfNeeded() {
@@ -134,14 +138,6 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-    public void onSaveRouteClick(View view) {
-        Log.i("map", "onSaveRouteClick");
-        Intent intent = new Intent(this, SaveActivity.class);
-        intent.putExtra("path", _path);
-        intent.putParcelableArrayListExtra("landmarks", _landmarks);
-        startActivity(intent);
-    }
-
     /**
      * This is where we can add markers or lines, add listeners or move the camera. In this case, we
      * just add a marker near Africa.
@@ -154,54 +150,12 @@ public class MapsActivity extends FragmentActivity implements
         _map.setMyLocationEnabled(true);
         mLocationClient.connect();
 
-        //Set it to last location
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        List<String> matchingProviders = locationManager.getAllProviders();
-        Location bestResult = null;
-        float bestAccuracy = Float.MAX_VALUE;
-        float bestTime = Float.MAX_VALUE;
-        float minTime = Float.MIN_VALUE;
-        for (String provider: matchingProviders) {
-            Location location = locationManager.getLastKnownLocation(provider);
-            if (location != null) {
-                float accuracy = location.getAccuracy();
-                long time = location.getTime();
-
-                if ((time > minTime && accuracy < bestAccuracy)) {
-                    bestResult = location;
-                    bestAccuracy = accuracy;
-                    bestTime = time;
-                }
-                else if (time < minTime &&
-                        bestAccuracy == Float.MAX_VALUE && time > bestTime){
-                    bestResult = location;
-                    bestTime = time;
-                }
-            }
-        }
-
-        if(bestResult != null) {
-            LatLng last = new LatLng(bestResult.getLatitude(), bestResult.getLongitude());
-            CameraUpdate center = CameraUpdateFactory.newLatLng(last);
-            _map.moveCamera(center);
-            CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
-            _map.moveCamera(zoom);
-        }
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
-        _path.add(current);
-        if (_previous == null) {
-            _previous = current;
+        //if it's empty
+        if (!_path .iterator().hasNext())
+            //don't do anything!
             return;
-        }
-        _map.addPolyline(new PolylineOptions()
-                .add(_previous, current)
-                .width(PATH_WIDTH)
-                .color(Color.BLUE));
-        _previous = current;
+
+        //Set it to zoom to the route
         LatLngBounds.Builder boundsBuilder = LatLngBounds.builder();
         for (LatLng latLng : _path) {
             boundsBuilder.include(latLng);
@@ -212,20 +166,33 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onLandmarkCreated(Landmark landmark) {
-        //set the location from the latest
-        landmark.setLocation(_previous);
+    public void onLocationChanged(Location location) {
+        LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
 
-        MarkerOptions mo = new MarkerOptions()
-                .position(landmark.getLocation())
-                .title(landmark.getName())
-                .snippet(landmark.getDescription());
-        //icon can be null
-        if (landmark.getPhoto() != null)
-            mo = mo.icon(BitmapDescriptorFactory.fromBitmap(landmark.getPhoto()));
-        _landmarks.add(landmark);
-        _map.addMarker(mo);
+
+        LatLngBounds.Builder boundsBuilder = LatLngBounds.builder();
+        for (LatLng latLng : _path) {
+            boundsBuilder.include(latLng);
+        }
+        boundsBuilder.include(current);
+        _map.animateCamera(CameraUpdateFactory.newLatLngBounds(
+                boundsBuilder.build(), 100));
+
     }
+
+//    @Override
+//    public void onLandmarkCreated(Landmark landmark) {
+//        //set the location from the latest
+//        landmark.setLocation(_previous);
+//        MarkerOptions mo = new MarkerOptions()
+//                .position(landmark.getLocation())
+//                .title(landmark.getName())
+//                .snippet(landmark.getDescription());
+//        //icon can be null
+//        if (landmark.getPhoto() != null)
+//            mo = mo.icon(BitmapDescriptorFactory.fromBitmap(landmark.getPhoto()));
+//        _map.addMarker(mo);
+//    }
 
 
     // Define a DialogFragment that displays the error dialog
@@ -362,27 +329,26 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-    //TODO: Fix the R.anim.bottom_up
-    public void onAddLandmarkClick(View v) {
-        if (!isPanelShown()) {
-            // Show the panel
-            Animation bottomUp = AnimationUtils.loadAnimation(this,
-                    R.anim.bottom_up);
-
-            _hiddenPanel.startAnimation(bottomUp);
-            _hiddenPanel.setVisibility(View.VISIBLE);
-        } else {
-            // Hide the Panel
-            Animation bottomDown = AnimationUtils.loadAnimation(this,
-                    R.anim.bottom_down);
-
-            _hiddenPanel.startAnimation(bottomDown);
-            _hiddenPanel.setVisibility(View.GONE);
-        }
-    }
-
-    private boolean isPanelShown() {
-                return _hiddenPanel.getVisibility() == View.VISIBLE;
-        }
+//    public void onAddLandmarkClick(View v) {
+//        if (!isPanelShown()) {
+//            // Show the panel
+//            Animation bottomUp = AnimationUtils.loadAnimation(this,
+//                    R.anim.bottom_up);
+//
+//            _hiddenPanel.startAnimation(bottomUp);
+//            _hiddenPanel.setVisibility(View.VISIBLE);
+//        } else {
+//            // Hide the Panel
+//            Animation bottomDown = AnimationUtils.loadAnimation(this,
+//                    R.anim.bottom_down);
+//
+//            _hiddenPanel.startAnimation(bottomDown);
+//            _hiddenPanel.setVisibility(View.GONE);
+//        }
+//    }
+//
+//    private boolean isPanelShown() {
+//                return _hiddenPanel.getVisibility() == View.VISIBLE;
+//        }
 
 }

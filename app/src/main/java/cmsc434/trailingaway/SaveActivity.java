@@ -3,6 +3,8 @@ package cmsc434.trailingaway;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import cmsc434.trailingaway.utilities.JSONUtils;
 
@@ -26,12 +29,17 @@ public class SaveActivity extends Activity {
     private RouteRowData data;
     private RouteType routeType = RouteType.WALK;
     private TrailingAwayPath _path;
+    private ArrayList<Landmark> _landmarks;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save);
 
         _path = getIntent().getParcelableExtra("path");
+        //TODO:Fix this parcelable stuff
+//        _landmarks = getIntent().getParcelableArrayListExtra("landmarks");
+
 
         data = new RouteRowData(null, null, null, null);
 
@@ -97,7 +105,7 @@ public class SaveActivity extends Activity {
         dir.mkdir();
         JSONUtils.addRouteDataToGson(data, getFilesDir() + "/" + getString(R.string.route_file));
         JSONUtils.latLonListToGson(data.getFolderLocation() + getString(R.string.latlng_file), _path);
-
+        JSONUtils.landmarksToGson(data.getFolderLocation() + R.string.landmark_file, _landmarks);
         Intent intent = new Intent(this, RoutesActivity.class);
         startActivity(intent);
     }

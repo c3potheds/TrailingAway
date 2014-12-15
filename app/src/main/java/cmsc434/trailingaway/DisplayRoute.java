@@ -30,7 +30,7 @@ public class DisplayRoute extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         folderLocation = getIntent().getStringExtra("folderLocation");
-        latLngs = (TrailingAwayPath) JSONUtils.gsonToLatLonList(folderLocation + R.string.latlng_file);
+        latLngs = JSONUtils.gsonToLatLonList(folderLocation + R.string.latlng_file);
         setUpMapIfNeeded();
     }
 

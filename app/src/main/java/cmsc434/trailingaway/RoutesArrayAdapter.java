@@ -111,7 +111,7 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
             public void onClick(View v) {
                 String folderLocation = (String) v.getTag();
                 //TODO: This method will start an activity that will display the route located at
-                Intent intent = new Intent(getContext(), DisplayRoute.class);
+                Intent intent = new Intent(getContext(), DisplayRoutes.class);
                 //Pass the lists to the activity
                 intent.putExtra("folderLocation", folderLocation);
 

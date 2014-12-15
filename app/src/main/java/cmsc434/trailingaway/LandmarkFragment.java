@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
  * create an instance of this fragment.
  *
  */
-public class LandmarkFragment extends Fragment {
+public class LandmarkFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener _listener;
 
@@ -58,26 +58,11 @@ public class LandmarkFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_landmark, container, false);
         Button save = (Button) v.findViewById(R.id.buttonAddLandmarkSave);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onAddLandmarkSaveClick(view);
-            }
-        });
+        save.setOnClickListener(this);
         Button cancel = (Button) v.findViewById(R.id.buttonAddLandmarkCancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onAddLandmarkCancelClick(view);
-            }
-        });
+        cancel.setOnClickListener(this);
         Button photo = (Button)v.findViewById(R.id.buttonAddPhoto);
-        photo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onAddPhotoClick(view);
-            }
-        });
+        photo.setOnClickListener(this);
         return v;
     }
 
@@ -121,15 +106,13 @@ public class LandmarkFragment extends Fragment {
                 R.id.editTextName)).getText().toString();
         String description = ((EditText)getActivity().findViewById(
                 R.id.editTextDescription)).getText().toString();
-        Location location = ((MapView) getActivity().findViewById(R.id.map))
-                .getMap().getMyLocation();
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
         ImageView viewPhoto = ((ImageView)getActivity().findViewById(R.id.imageViewPhoto));
         viewPhoto.buildDrawingCache();
         Bitmap photo = viewPhoto.getDrawingCache();
 
-
-        Landmark newLandmark = new Landmark(name, description, photo, latLng);
+        //Will set latLng in map activity
+        Landmark newLandmark = new Landmark(name, description, photo, null);
         _listener.onLandmarkCreated(newLandmark);
 
         Animation bottomDown = AnimationUtils.loadAnimation(getActivity().getBaseContext(),
@@ -146,6 +129,21 @@ public class LandmarkFragment extends Fragment {
         View hiddenPanel = getActivity().findViewById(R.id.layoutLandmarkPanel);
         hiddenPanel.startAnimation(bottomDown);
         hiddenPanel.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.buttonAddLandmarkCancel:
+                onAddLandmarkCancelClick(v);
+                break;
+            case R.id.buttonAddPhoto:
+                onAddPhotoClick(v);
+                break;
+            case R.id.buttonAddLandmarkSave:
+                onAddLandmarkSaveClick(v);
+                break;
+        }
     }
 
 

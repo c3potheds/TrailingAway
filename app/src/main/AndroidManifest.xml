@@ -55,6 +55,11 @@
 
         <activity
             android:name=".DisplayRoute"
+            android:label="@string/title_activity_display_route"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".DisplayRoutes"
             android:label="@string/title_activity_display_route" >
         </activity>
         <activity
