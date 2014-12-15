@@ -68,7 +68,7 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
                 public void onClick(View v) {
                     //This wil start recording a new route
                     v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                    Intent intent = new Intent(v.getContext(), MapActivity.class);
+                    Intent intent = new Intent(v.getContext(), MapsActivity.class);
                     v.getContext().startActivity(intent);
                 }
             });
