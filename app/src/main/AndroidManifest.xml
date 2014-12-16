@@ -28,12 +28,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MapActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_map"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name=".RoutesActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_routes"
@@ -54,11 +48,6 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".DisplayRoute"
-            android:label="@string/title_activity_display_route"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name=".DisplayRoutes"
             android:label="@string/title_activity_display_route" >
         </activity>
@@ -67,10 +56,6 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".OffscreenActivityTest"
-            android:label="@string/title_activity_offscreen_activity_test" >
         </activity>
     </application>
 

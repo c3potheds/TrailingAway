@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Bryan on 12/2/2014.
  */
-public class RouteRowData implements Serializable {
+public class RouteRowData implements Serializable, Comparable {
 
     private RouteType routeType;
     private String title;
@@ -53,6 +53,14 @@ public class RouteRowData implements Serializable {
         this.title = title;
     }
 
+    @Override
+    public int compareTo(Object another) {
+        if(another == null)
+            return 1;
+        if (!(another instanceof RouteRowData))
+            return -1;
+       return title.toLowerCase().compareTo(((RouteRowData) another).getTitle().toLowerCase());
+    }
 }
 
 enum RouteType {

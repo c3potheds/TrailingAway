@@ -99,7 +99,8 @@ public class DisplayRoutes extends FragmentActivity implements
         folderLocation = getIntent().getStringExtra("folderLocation");
         _path = JSONUtils.gsonToLatLonList(folderLocation + getString(R.string.latlng_file));
         _landmarks = JSONUtils.gsonToLandmarks(folderLocation + getString(R.string.landmark_file));
-//        _landmarks = new ArrayList<Landmark>();
+        if (_landmarks == null)
+            _landmarks = new ArrayList<Landmark>();
 
         mLocationClient = new LocationClient(this, this, this);
         mUpdatesRequested = false;

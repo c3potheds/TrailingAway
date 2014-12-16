@@ -32,7 +32,14 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
 
     private final Context context;
     private final RouteRowData[] values;
+    private String buttonMessage;
 
+    public RoutesArrayAdapter(Context context, RouteRowData[] values, String buttonMessage) {
+        super(context, R.layout.routes_list_row, values);
+        this.context = context;
+        this.values = values;
+        this.buttonMessage = buttonMessage;
+    }
     public RoutesArrayAdapter(Context context, RouteRowData[] values) {
         super(context, R.layout.routes_list_row, values);
         this.context = context;
@@ -56,7 +63,12 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
             icon.setImageResource(R.drawable.ic_add);
 
             TextView addText = (TextView) rowView.findViewById(R.id.firstLine);
-            addText.setText("Add New Route");
+            if(buttonMessage.equals("Open Route"))
+                addText.setText("Add New Route");
+            else
+                addText.setText("Download Route");
+
+            rowView.findViewById(R.id.secondLine).setVisibility(View.INVISIBLE);
 
             Button button = (Button) rowView.findViewById(R.id.routeButton);
             button.setVisibility(View.INVISIBLE);
@@ -106,6 +118,7 @@ public class RoutesArrayAdapter extends ArrayAdapter<RouteRowData> {
         //make this an actual class w/constructor
 
         button.setTag(values[position].getFolderLocation());
+        button.setText(buttonMessage);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

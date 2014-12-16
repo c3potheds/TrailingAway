@@ -131,12 +131,18 @@ public class RoutesActivity extends Activity implements ActionBar.TabListener {
                 RoutesListFragment rlf = new RoutesListFragment();
                 Bundle args = new Bundle();
                 args.putString("filesDir", getFilesDir().getAbsolutePath());
+                args.putString("buttonMessage", "Open Route");
                 rlf.setArguments(args);
                 return rlf;
             }
-            else if (position == 1)
-                return PlaceholderFragment.newInstance(position + 1);
-            else
+            else if (position == 1) {
+                RoutesListFragment rlf = new RoutesListFragment();
+                Bundle args = new Bundle();
+                args.putString("filesDir", getFilesDir().getAbsolutePath());
+                args.putString("buttonMessage", "Send Route");
+                rlf.setArguments(args);
+                return rlf;
+            } else
                 return null;
         }
 

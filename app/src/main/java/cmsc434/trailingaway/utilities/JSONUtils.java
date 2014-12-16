@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import cmsc434.trailingaway.Landmark;
@@ -37,8 +38,10 @@ public class JSONUtils {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             Gson gson = new Gson();
-            return gson.fromJson(reader, new TypeToken<ArrayList<RouteRowData>>() {
+            List<RouteRowData> data = gson.fromJson(reader, new TypeToken<ArrayList<RouteRowData>>() {
                 }.getType());
+            Collections.sort(data);
+            return data;
         } catch (FileNotFoundException e) {
             //no files have been created. Create one with null.
             List<RouteRowData> data = new ArrayList<RouteRowData>();
@@ -143,10 +146,11 @@ public class JSONUtils {
             return landmarks;
         } catch (FileNotFoundException e) {
             Log.e("ERROR", "Can't find file", e);
+            return new ArrayList<Landmark>();
         } catch (IOException e) {
             e.printStackTrace();
+            return new ArrayList<Landmark>();
         }
-        return new ArrayList<Landmark>();
     }
 
     public static void landmarksToGson(String fileName, List<Landmark> data) {
@@ -159,14 +163,8 @@ public class JSONUtils {
             FileWriter fw = new FileWriter(fileName);
             gson.toJson(data, fw);
             fw.close();
-            FileReader fr = new FileReader(fileName);
-            BufferedReader br = new BufferedReader(fr);
-            String line = br.readLine();
 
-            ArrayList<Landmark> res = gson.fromJson(line, new TypeToken<ArrayList<Landmark>>() {
-            }.getType());
-            for (Landmark l : res)
-                Log.d("JSON RESULT", l.get_name());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
