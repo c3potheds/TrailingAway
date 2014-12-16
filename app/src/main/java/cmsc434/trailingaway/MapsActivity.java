@@ -147,7 +147,7 @@ public class MapsActivity extends FragmentActivity implements
         Log.i("map", "onSaveRouteClick");
         Intent intent = new Intent(this, SaveActivity.class);
         intent.putExtra("path", _path);
-        intent.putParcelableArrayListExtra("landmarks", _landmarks);
+        //intent.putParcelableArrayListExtra("landmarks", _landmarks);
         startActivity(intent);
     }
 
