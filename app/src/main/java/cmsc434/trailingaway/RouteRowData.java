@@ -12,6 +12,8 @@ public class RouteRowData implements Serializable {
     private String folderLocation;
     private String description;
 
+    public RouteRowData(){};
+
     public RouteRowData(RouteType rt, String title, String description, String folderLocation) {
         this.routeType = rt;
         this.title = title;

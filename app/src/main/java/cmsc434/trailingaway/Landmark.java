@@ -16,46 +16,49 @@ import java.util.ArrayList;
 public class Landmark implements Parcelable {
     private String _name;
     private String _description;
-    private Bitmap _photo;
+    private String _photo_location;
     private LatLng _location;
 
-    public Landmark(String name, String description, Bitmap photo, LatLng location) {
+    public Landmark() {
+
+    }
+
+    public Landmark(String name, String description, String photo_location, LatLng location) {
         _name = name;
         _description = description;
-        _photo = photo;
+        _photo_location = photo_location;
         _location = location;
     }
 
-    public String getName() {
+    public String get_name() {
         return _name;
     }
 
-
-    public void setName(String _name) {
+    public void set_name(String _name) {
         this._name = _name;
     }
 
-    public String getDescription() {
+    public String get_description() {
         return _description;
     }
 
-    public void setDescription(String _description) {
+    public void set_description(String _description) {
         this._description = _description;
     }
 
-    public Bitmap getPhoto() {
-        return _photo;
+    public String get_photo_location() {
+        return _photo_location;
     }
 
-    public void setPhoto(Bitmap _photo) {
-        this._photo = _photo;
+    public void set_photo_location(String _photo_location) {
+        this._photo_location = _photo_location;
     }
 
-    public LatLng getLocation() {
+    public LatLng get_location() {
         return _location;
     }
 
-    public void setLocation(LatLng _location) {
+    public void set_location(LatLng _location) {
         this._location = _location;
     }
 
@@ -66,7 +69,7 @@ public class Landmark implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(_photo, flags);
+        dest.writeString(_photo_location);
         dest.writeString(_name);
         dest.writeString(_description);
         dest.writeParcelable(_location, flags);
@@ -80,14 +83,12 @@ public class Landmark implements Parcelable {
         }
 
         public Landmark[] newArray(int size) {
-
             return new Landmark[size];
         }
     };
 
     private Landmark(Parcel in) {
-        int length = in.readInt();
-        _photo = in.readParcelable(Bitmap.class.getClassLoader());
+        _photo_location = in.readString();
         _name = in.readString();
         _description = in.readString();
         _location = in.readParcelable(LatLng.class.getClassLoader());

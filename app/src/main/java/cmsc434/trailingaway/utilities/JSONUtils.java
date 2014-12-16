@@ -13,11 +13,13 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,10 +70,31 @@ public class JSONUtils {
         Gson gson = new Gson();
         try {
             FileReader fr = new FileReader(fileName);
-            return gson.fromJson(fr, new TypeToken<TrailingAwayPath>() {
-            }.getType());
+            BufferedReader br = new BufferedReader(fr);
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+            while(line != null && !line.equals("")) {
+                sb.append(line);
+                line = br.readLine();
+            }
+//            Log.d("JSON", sb.toString());
+            File f = new File(fileName);
+            if(!f.exists())
+                Log.e("JSON", "file doesn't exist");
+
+            try {
+                TrailingAwayPath path = gson.fromJson(sb.toString(), TrailingAwayPath.class);
+//            TrailingAwayPath path = gson.fromJson(fr, new TypeToken<TrailingAwayPath>() {
+//            }.getType());
+                return path;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } catch (FileNotFoundException e) {
             Log.e("ERROR", "Can't find file", e);
+        } catch(Exception e) {
+            e.printStackTrace();
         }
 
         return null;
@@ -80,22 +103,48 @@ public class JSONUtils {
     public static void latLonListToGson(String fileName, TrailingAwayPath data) {
         Gson gson = new Gson();
         try {
+            File f = new File(fileName);
+            if(!f.exists())
+                f.createNewFile();
+
             FileWriter fw = new FileWriter(fileName);
             gson.toJson(data, fw);
+            fw.close();
+            Log.d("JSONUTILS", "Got here");
+            Log.d("JSON", gson.toJson(data));
+            FileReader fr = new FileReader(fileName);
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+            Log.d("JSON", line);
+            TrailingAwayPath p = gson.fromJson(line, TrailingAwayPath.class);
+            int i = p.describeContents();
         } catch (IOException e) {
-            return;
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public static List<Landmark> gsonToLandmarks(String fileName) {
-        //TODO: implement a landmark class and change this to load it
         Gson gson = new Gson();
         try {
+            File f = new File(fileName);
+            if(!f.exists()) {
+                Log.e("JSON", "file doesn't exist");
+                return new ArrayList<Landmark>();
+            }
             FileReader fr = new FileReader(fileName);
-            return gson.fromJson(fr, new TypeToken<ArrayList<LatLng>>() {
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+
+            ArrayList<Landmark> landmarks = gson.fromJson(line, new TypeToken<ArrayList<Landmark>>() {
             }.getType());
+
+            return landmarks;
         } catch (FileNotFoundException e) {
             Log.e("ERROR", "Can't find file", e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return new ArrayList<Landmark>();
     }
@@ -103,10 +152,23 @@ public class JSONUtils {
     public static void landmarksToGson(String fileName, List<Landmark> data) {
         Gson gson = new Gson();
         try {
+            File f = new File(fileName);
+            if(!f.exists())
+                f.createNewFile();
+
             FileWriter fw = new FileWriter(fileName);
             gson.toJson(data, fw);
+            fw.close();
+            FileReader fr = new FileReader(fileName);
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+
+            ArrayList<Landmark> res = gson.fromJson(line, new TypeToken<ArrayList<Landmark>>() {
+            }.getType());
+            for (Landmark l : res)
+                Log.d("JSON RESULT", l.get_name());
         } catch (IOException e) {
-            return;
+            e.printStackTrace();
         }
     }
 

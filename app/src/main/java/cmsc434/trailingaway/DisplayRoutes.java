@@ -5,16 +5,24 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
+import android.media.ImageReader;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -26,13 +34,16 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cmsc434.trailingaway.utilities.JSONUtils;
@@ -40,7 +51,8 @@ import cmsc434.trailingaway.utilities.JSONUtils;
 public class DisplayRoutes extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,
+        LandmarkFragment.OnFragmentInteractionListener{
 
     /*
  * Define a request code to send to Google Play services
@@ -71,25 +83,33 @@ public class DisplayRoutes extends FragmentActivity implements
 
     private TrailingAwayPath _path;
     private List<Landmark> _landmarks;
+    private HashMap<String, String> _markers;
     private String folderLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        folderLocation = getIntent().getStringExtra("folderLocation");
-        _path = JSONUtils.gsonToLatLonList(folderLocation + R.string.latlng_file);
-        _landmarks = JSONUtils.gsonToLandmarks(folderLocation + R.string.landmark_file);
+        View v = getLayoutInflater().inflate(R.layout.activity_maps, null);
+        v.findViewById(R.id.fragmentAddLandmark).setVisibility(View.INVISIBLE);
+        v.findViewById(R.id.button).setVisibility(View.INVISIBLE);
+        v.findViewById(R.id.buttonBar).setVisibility(View.INVISIBLE);
+        setContentView(v);
 
-        setContentView(R.layout.activity_display_route);
-        _path = new TrailingAwayPath();
+        _markers = new HashMap<String, String>();
+        folderLocation = getIntent().getStringExtra("folderLocation");
+        _path = JSONUtils.gsonToLatLonList(folderLocation + getString(R.string.latlng_file));
+        _landmarks = JSONUtils.gsonToLandmarks(folderLocation + getString(R.string.landmark_file));
+//        _landmarks = new ArrayList<Landmark>();
+
         mLocationClient = new LocationClient(this, this, this);
         mUpdatesRequested = false;
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(MILLISECONDS_PER_SECOND);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        _hiddenPanel = findViewById(R.id.layoutLandmarkPanel);
+//        _hiddenPanel = findViewById(R.id.layoutLandmarkPanel);
         setUpMapIfNeeded();
+
     }
 
     @Override
@@ -148,10 +168,11 @@ public class DisplayRoutes extends FragmentActivity implements
 
         _map.getUiSettings().setZoomControlsEnabled(false);
         _map.setMyLocationEnabled(true);
-        mLocationClient.connect();
+        _map.setInfoWindowAdapter(new TAInfoWindow());
+
 
         //if it's empty
-        if (!_path .iterator().hasNext())
+        if (!(_path.iterator() != null && _path.iterator().hasNext()))
             //don't do anything!
             return;
 
@@ -160,15 +181,30 @@ public class DisplayRoutes extends FragmentActivity implements
         for (LatLng latLng : _path) {
             boundsBuilder.include(latLng);
         }
-        _map.animateCamera(CameraUpdateFactory.newLatLngBounds(
-                boundsBuilder.build(), 100));
 
+        for(Landmark l : _landmarks) {
+            boundsBuilder.include(l.get_location());
+            MarkerOptions mo = new MarkerOptions()
+                    .position(l.get_location())
+                    .title(l.get_name())
+                    .snippet(l.get_description());
+
+            Marker m = _map.addMarker(mo);
+
+            String loc;
+            if((loc = l.get_photo_location()) != null && !loc.equals(" "))
+                _markers.put(m.getId(), loc);
+        }
+
+        LatLng cntr = boundsBuilder.build().getCenter();
+        _map.animateCamera(CameraUpdateFactory.newLatLngZoom(cntr, 10));
+
+        mLocationClient.connect();
     }
 
     @Override
     public void onLocationChanged(Location location) {
         LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
-
 
         LatLngBounds.Builder boundsBuilder = LatLngBounds.builder();
         for (LatLng latLng : _path) {
@@ -178,6 +214,11 @@ public class DisplayRoutes extends FragmentActivity implements
         _map.animateCamera(CameraUpdateFactory.newLatLngBounds(
                 boundsBuilder.build(), 100));
 
+    }
+
+    @Override
+    public void onLandmarkCreated(Landmark landmark) {
+        //Does nothing as button is not enabled.
     }
 
 //    @Override
@@ -351,4 +392,37 @@ public class DisplayRoutes extends FragmentActivity implements
 //                return _hiddenPanel.getVisibility() == View.VISIBLE;
 //        }
 
+    class TAInfoWindow implements GoogleMap.InfoWindowAdapter {
+
+        private final View myContents;
+
+        TAInfoWindow() {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            myContents = inflater.inflate(R.layout.ta_info_window, null);
+            Log.d("Test","Test");
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            TextView title = (TextView) myContents.findViewById(R.id.info_title);
+            TextView desc = (TextView) myContents.findViewById(R.id.info_description);
+            ImageView image = (ImageView) myContents.findViewById(R.id.info_icon);
+            title.setText(marker.getTitle());
+            desc.setText(marker.getSnippet());
+            String loc;
+            if ((loc = _markers.get(marker.getId())) != null) {
+                Bitmap bMap = BitmapFactory.decodeFile(loc);
+                image.setImageBitmap(bMap);
+            } else
+                image.setVisibility(View.INVISIBLE);
+
+            return myContents;
+        }
+
+    }
 }

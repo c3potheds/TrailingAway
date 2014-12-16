@@ -14,6 +14,14 @@ import java.util.List;
  */
 public class TrailingAwayPath implements Parcelable, Iterable<LatLng> {
 
+    public List<LatLng> get_points() {
+        return _points;
+    }
+
+    public void set_points(List<LatLng> _points) {
+        this._points = _points;
+    }
+
     private List<LatLng> _points;
 
     public TrailingAwayPath() {

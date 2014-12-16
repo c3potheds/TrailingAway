@@ -3,6 +3,7 @@ package cmsc434.trailingaway;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +20,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 
 /**
@@ -111,8 +119,39 @@ public class LandmarkFragment extends Fragment implements View.OnClickListener {
         viewPhoto.buildDrawingCache();
         Bitmap photo = viewPhoto.getDrawingCache();
 
+        String photo_fd = " ";
+        if(photo != null) {
+            //This will save the photo regardless. It can be cleaned up if the route isn't saved
+            FileOutputStream out = null;
+            int i = 1;
+            try {
+                File f = new File(getActivity().getFilesDir() + "/images/");
+                if (!f.exists())
+                    f.mkdir();
+                f = new File(f.getAbsolutePath() + "/image.png");
+                while (f.exists())
+                    f = new File(f.getAbsolutePath().replace(".png", i++ + ".png"));
+                photo_fd = f.getAbsolutePath();
+                f.createNewFile();
+                out = new FileOutputStream(f);
+                photo.compress(Bitmap.CompressFormat.PNG, 100, out);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (out != null) {
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         //Will set latLng in map activity
-        Landmark newLandmark = new Landmark(name, description, photo, null);
+        Landmark newLandmark = new Landmark(name, description, photo_fd, null);
         _listener.onLandmarkCreated(newLandmark);
 
         Animation bottomDown = AnimationUtils.loadAnimation(getActivity().getBaseContext(),

@@ -38,7 +38,7 @@ public class SaveActivity extends Activity {
 
         _path = getIntent().getParcelableExtra("path");
         //TODO:Fix this parcelable stuff
-//        _landmarks = getIntent().getParcelableArrayListExtra("landmarks");
+        _landmarks = getIntent().getParcelableArrayListExtra("landmarks");
 
 
         data = new RouteRowData(null, null, null, null);
@@ -102,10 +102,15 @@ public class SaveActivity extends Activity {
         data.setDescription(desc.getText().toString());
         data.setFolderLocation(getFilesDir() + "/" + data.getTitle() + "/");
         File dir = new File(data.getFolderLocation());
+        int i = 1;
+        while(dir.exists()) {
+            data.setFolderLocation(data.getFolderLocation() + i);
+            i++;
+        }
         dir.mkdir();
         JSONUtils.addRouteDataToGson(data, getFilesDir() + "/" + getString(R.string.route_file));
         JSONUtils.latLonListToGson(data.getFolderLocation() + getString(R.string.latlng_file), _path);
-        JSONUtils.landmarksToGson(data.getFolderLocation() + R.string.landmark_file, _landmarks);
+        JSONUtils.landmarksToGson(data.getFolderLocation() + getString(R.string.landmark_file), _landmarks);
         Intent intent = new Intent(this, RoutesActivity.class);
         startActivity(intent);
     }

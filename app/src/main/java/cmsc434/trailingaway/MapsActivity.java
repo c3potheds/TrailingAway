@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
@@ -15,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -26,13 +30,16 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements
@@ -70,6 +77,7 @@ public class MapsActivity extends FragmentActivity implements
 
     private TrailingAwayPath _path;
     private ArrayList<Landmark> _landmarks;
+    private HashMap<String, String> _markers;
     private LatLng _previous;
 
     @Override
@@ -78,6 +86,7 @@ public class MapsActivity extends FragmentActivity implements
         setContentView(R.layout.activity_maps);
         _path = new TrailingAwayPath();
         _landmarks = new ArrayList<Landmark>();
+        _markers = new HashMap<String, String>();
         mLocationClient = new LocationClient(this, this, this);
         mUpdatesRequested = false;
         mLocationRequest = LocationRequest.create();
@@ -152,6 +161,7 @@ public class MapsActivity extends FragmentActivity implements
 
         _map.getUiSettings().setZoomControlsEnabled(false);
         _map.setMyLocationEnabled(true);
+        _map.setInfoWindowAdapter(new TAInfoWindow());
         mLocationClient.connect();
 
         //Set it to last location
@@ -214,18 +224,19 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onLandmarkCreated(Landmark landmark) {
         //set the location from the latest
-        landmark.setLocation(_previous);
+        landmark.set_location(_previous);
 
         MarkerOptions mo = new MarkerOptions()
-                .position(landmark.getLocation())
-                .title(landmark.getName())
-                .snippet(landmark.getDescription());
-        //icon can be null
-        if (landmark.getPhoto() != null)
-            mo = mo.icon(BitmapDescriptorFactory.fromBitmap(landmark.getPhoto()));
+                .position(landmark.get_location())
+                .title(landmark.get_name())
+                .snippet(landmark.get_description());
         _landmarks.add(landmark);
-        _map.addMarker(mo);
+        Marker m = _map.addMarker(mo);
+        //If it has a photo, we'll store the image location
+        if (landmark.get_photo_location() != null && !landmark.get_photo_location().equals(" "))
+            _markers.put(m.getId(), landmark.get_photo_location());
     }
+
 
 
     // Define a DialogFragment that displays the error dialog
@@ -385,4 +396,36 @@ public class MapsActivity extends FragmentActivity implements
                 return _hiddenPanel.getVisibility() == View.VISIBLE;
         }
 
+
+    class TAInfoWindow implements GoogleMap.InfoWindowAdapter {
+
+        private final View myContents;
+
+        TAInfoWindow() {
+            myContents = getLayoutInflater().inflate(R.layout.ta_info_window, null);
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            TextView title = (TextView) myContents.findViewById(R.id.info_title);
+            TextView desc = (TextView) myContents.findViewById(R.id.info_description);
+            ImageView image = (ImageView) myContents.findViewById(R.id.info_icon);
+            title.setText(marker.getTitle());
+            desc.setText(marker.getSnippet());
+            String loc;
+            if ((loc = _markers.get(marker.getId())) != null) {
+                Bitmap bMap = BitmapFactory.decodeFile(loc);
+                image.setImageBitmap(bMap);
+            } else
+                image.setVisibility(View.INVISIBLE);
+
+            return myContents;
+        }
+
+    }
 }
