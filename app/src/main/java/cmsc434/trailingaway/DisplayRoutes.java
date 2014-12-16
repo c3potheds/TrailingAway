@@ -182,6 +182,11 @@ public class DisplayRoutes extends FragmentActivity implements
             boundsBuilder.include(latLng);
         }
 
+        _map.addPolyline(new PolylineOptions()
+                .color(Color.BLUE)
+                .width(PATH_WIDTH)
+                .addAll(_path));
+
         for(Landmark l : _landmarks) {
             boundsBuilder.include(l.get_location());
             MarkerOptions mo = new MarkerOptions()

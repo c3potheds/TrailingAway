@@ -22,7 +22,7 @@ public class OffscreenActivityTest extends Activity {
         if (!isPanelShown()) {
             // Show the panel
             Animation bottomUp = AnimationUtils.loadAnimation(this,
-                    R.anim.bottom_up);
+                    R.anim.bottom_down);
 
             hiddenPanel.startAnimation(bottomUp);
             hiddenPanel.setVisibility(View.VISIBLE);

@@ -378,7 +378,7 @@ public class MapsActivity extends FragmentActivity implements
         if (!isPanelShown()) {
             // Show the panel
             Animation bottomUp = AnimationUtils.loadAnimation(this,
-                    R.anim.bottom_up);
+                    R.anim.bottom_down);
 
             _hiddenPanel.startAnimation(bottomUp);
             _hiddenPanel.setVisibility(View.VISIBLE);
